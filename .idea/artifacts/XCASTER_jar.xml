@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="XCASTER:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/XCASTER_jar</output-path>
+    <root id="archive" name="XCASTER.jar">
+      <element id="module-output" name="XCASTER" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jmdns/jmdns/3.5.9/jmdns-3.5.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-simple/1.7.36/slf4j-simple-1.7.36.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
