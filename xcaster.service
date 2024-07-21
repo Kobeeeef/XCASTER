@@ -1,0 +1,14 @@
+[Unit]
+Description=XCASTER Service
+After=network.target
+
+[Service]
+ExecStart=java -jar /path/to/XCASTER.jar hostname
+Restart=always
+RestartSec=3
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=xcaster
+
+[Install]
+WantedBy=multi-user.target
