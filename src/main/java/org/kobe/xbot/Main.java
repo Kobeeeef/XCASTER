@@ -32,7 +32,7 @@ public class Main {
             InetAddress addr = Utilities.getLocalInetAddress();
             previousAddress = addr;
             jmdns = JmDNS.create(addr, hostname);
-            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "XCASTER by XBOT Robotics: Broadcasts hostname over the network.");
+            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "hostname=" + hostname);
             jmdns.registerService(serviceInfo);
 
             logger.info("mDNS service registered successfully.");
