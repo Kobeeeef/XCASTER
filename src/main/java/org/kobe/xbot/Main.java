@@ -19,7 +19,7 @@ public class Main {
 
                 try (JmDNS jmdns = JmDNS.create(addr, hostname)) {
 
-                    ServiceInfo serviceInfo = ServiceInfo.create("_http._tcp.local.", "XCASTER - Service Broadcaster", 54321, "XCASTER by XBOT Robotics: Broadcasts hostname over the network.");
+                    ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "XCASTER by XBOT Robotics: Broadcasts hostname over the network.");
                     jmdns.registerService(serviceInfo);
 
                     System.out.println("mDNS service registered successfully.");
