@@ -38,6 +38,7 @@ public class Main {
             logger.info("mDNS service registered successfully.");
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
+                    logger.info("Shutdown hook running, unregistering services.");
                     jmdns.unregisterAllServices();
                     jmdns.close();
                     logger.info("mDNS service unregistered successfully.");
