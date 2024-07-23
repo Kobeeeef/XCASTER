@@ -44,10 +44,12 @@ public class Main {
                     logger.info("mDNS service unregistered successfully.");
                 } catch (Exception e) {
                     logger.error("Failed to unregister mDNS service.", e);
+                    System.exit(0);
                 }
             }));
         } catch (IOException e) {
             logger.error("Failed to set up mDNS.", e);
+            System.exit(0);
         }
     }
 
@@ -60,31 +62,16 @@ public class Main {
                     InetAddress currentAddress = Utilities.getLocalInetAddress();
                     if (!currentAddress.equals(previousAddress)) {
                         logger.info("Network address changed from {} to {}. Restarting mDNS.", previousAddress, currentAddress);
-                        restartMDNS(hostname, currentAddress);
+                        System.exit(0);
                     }
                 } catch (IOException e) {
-                    previousAddress = null;
+                    logger.error("Failed to set up mDNS.", e);
+                    System.exit(0);
                 }
             }
         };
         timer.scheduleAtFixedRate(task, 0, 1000); // Check every millisecond
     }
 
-    private static void restartMDNS(String hostname, InetAddress newAddress) {
-        try {
-            if (jmdns != null) {
-                jmdns.unregisterAllServices();
-                jmdns.close();
-                logger.info("Previous mDNS service unregistered successfully.");
-            }
-            previousAddress = newAddress;
-            jmdns = JmDNS.create(newAddress, hostname);
-            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "XCASTER by XBOT Robotics: Broadcasts hostname over the network.");
-            jmdns.registerService(serviceInfo);
 
-            logger.info("New mDNS service registered successfully.");
-        } catch (IOException e) {
-            logger.error("Failed to restart mDNS service.", e);
-        }
-    }
 }
