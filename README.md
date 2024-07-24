@@ -13,4 +13,4 @@ Download the latest release of XCASTER from the link below:
 To run XCASTER, open a terminal and execute the following command:
 
 ```sh
-java -jar XCASTER.jar {hostname}
+java -Djava.net.preferIPv4Stack=true -jar XCASTER.jar {hostname}
