@@ -14,3 +14,10 @@ To run XCASTER, open a terminal and execute the following command:
 
 ```sh
 java -Djava.net.preferIPv4Stack=true -jar XCASTER.jar {hostname}
+
+# Browsing for XCASTER Services
+
+To browse for machines running the XCASTER service on your local network, use the following command:
+
+```bash
+avahi-browse -rt _xcaster._tcp
