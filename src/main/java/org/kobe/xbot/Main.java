@@ -15,6 +15,7 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private static JmDNS jmdns;
     private static InetAddress previousAddress;
+    private static Timer timer;
 
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -39,22 +40,26 @@ public class Main {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     logger.info("Shutdown hook running, unregistering services.");
-                    jmdns.unregisterAllServices();
-                    jmdns.close();
-                    logger.info("mDNS service unregistered successfully.");
+                    if (jmdns != null) {
+                        jmdns.unregisterAllServices();
+                        jmdns.close();
+                    }
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    logger.info("Resources released successfully.");
                 } catch (Exception e) {
-                    logger.error("Failed to unregister mDNS service.", e);
-                    System.exit(0);
+                    logger.error("Failed to release resources.", e);
                 }
             }));
         } catch (IOException e) {
             logger.error("Failed to set up mDNS.", e);
-            System.exit(0);
+            System.exit(1);
         }
     }
 
     private static void startAddressMonitor(String hostname) {
-        Timer timer = new Timer();
+        timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -62,16 +67,14 @@ public class Main {
                     InetAddress currentAddress = Utilities.getLocalInetAddress();
                     if (!currentAddress.equals(previousAddress)) {
                         logger.info("Network address changed from {} to {}. Restarting mDNS.", previousAddress, currentAddress);
-                        System.exit(0);
+                        System.exit(0); // Ensure shutdown hook runs
                     }
                 } catch (IOException e) {
                     logger.error("Failed to set up mDNS.", e);
-                    System.exit(0);
+                    System.exit(1); // Ensure shutdown hook runs
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 1000); // Check every millisecond
+        timer.scheduleAtFixedRate(task, 0, 1000); // Check every second
     }
-
-
 }
