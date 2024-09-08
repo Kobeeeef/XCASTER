@@ -7,6 +7,8 @@ import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,7 +36,11 @@ public class Main {
             InetAddress addr = Utilities.getLocalInetAddress();
             previousAddress = addr;
             jmdns = JmDNS.create(addr, hostname);
-            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "hostname=" + hostname + ";username=" + username + ";password=" + password);
+            Map<String, String> props = new HashMap<>();
+            props.put("hostname", hostname);
+            props.put("username", username);
+            props.put("password", password);
+            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, 0,0, props);
             jmdns.registerService(serviceInfo);
 
             logger.info("mDNS service registered successfully.");
