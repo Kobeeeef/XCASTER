@@ -18,13 +18,13 @@ public class Main {
     private static Timer timer;
 
     public static void main(String[] args) {
-        if (args.length != 3) {
-            System.out.println("Usage: java Main <hostname> <username> <password>");
+        if (args.length == 0) {
+            System.out.println("Usage: java Main <hostname> (username) <password>");
             return;
         }
         String hostname = args[0].trim();
-        String username = args[1].trim();
-        String password = args[2].trim();
+        String username = args.length >= 2 ? args[1].trim() : null;
+        String password = args.length >= 3 ? args[2].trim() : null;
         setupMDNS(hostname, username, password);
         startAddressMonitor(hostname);
     }
