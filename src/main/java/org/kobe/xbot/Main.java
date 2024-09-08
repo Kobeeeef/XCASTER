@@ -18,25 +18,27 @@ public class Main {
     private static Timer timer;
 
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Usage: java Main <hostname>");
+        if (args.length != 3) {
+            System.out.println("Usage: java Main <hostname> <username> <password>");
             return;
         }
         String hostname = args[0].trim();
-
-        setupMDNS(hostname);
+        String username = args[1].trim();
+        String password = args[2].trim();
+        setupMDNS(hostname, username, password);
         startAddressMonitor(hostname);
     }
 
-    private static void setupMDNS(String hostname) {
+    private static void setupMDNS(String hostname, String username, String password) {
         try {
             InetAddress addr = Utilities.getLocalInetAddress();
             previousAddress = addr;
             jmdns = JmDNS.create(addr, hostname);
-            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "hostname=" + hostname);
+            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, "hostname=" + hostname + ",username=" + username + ",password=" + password);
             jmdns.registerService(serviceInfo);
 
             logger.info("mDNS service registered successfully.");
+            logger.info("\nUsername: {}\nPassword: {}", username, password);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     logger.info("Shutdown hook running, unregistering services.");

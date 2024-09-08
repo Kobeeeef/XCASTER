@@ -6,11 +6,11 @@ import java.util.Enumeration;
 public class Utilities {
     public static InetAddress getLocalInetAddress() throws SocketException, UnknownHostException {
 
-            InetAddress localHost = Inet4Address.getLocalHost();
-            if (localHost.isLoopbackAddress()) {
-                return findNonLoopbackAddress();
-            }
-            return localHost;
+        InetAddress localHost = Inet4Address.getLocalHost();
+        if (localHost.isLoopbackAddress()) {
+            return findNonLoopbackAddress();
+        }
+        return localHost;
 
 
     }
