@@ -3,7 +3,7 @@ Description=XCASTER Service
 After=network.target
 
 [Service]
-ExecStart=java -jar /path/to/XCASTER.jar hostname
+ExecStart=java -jar /path/to/XCASTER.jar hostname username password
 Restart=always
 RestartSec=3
 StandardOutput=syslog
