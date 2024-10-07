@@ -1,6 +1,6 @@
 # XCASTER
 
-XCASTER is a tool developed for XBOT Robotics that is designed to broadcast **any** hostname of a machine over the local network using mDNS. 
+XCASTER is a tool developed that is designed to broadcast **any** hostname of a machine over the local network using mDNS. 
 
 ## Download
 
