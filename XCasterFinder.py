@@ -32,8 +32,6 @@ class XCasterFinderServiceListener(ServiceListener):
             for key, value in info.properties.items():
                 property_info = f"  {key.decode('utf-8')}: {value.decode('utf-8') if isinstance(value, bytes) else value}"
                 properties.append(property_info)
-
-            # Prepare the service information (IP and properties with better formatting)
             service_info = f"IP: {service_address}\nProperties:\n" + "\n".join(properties) + "\n\n"
             print("--------------------------------------------------------")
             print(service_info)
