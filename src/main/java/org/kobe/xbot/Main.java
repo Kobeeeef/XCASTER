@@ -2,6 +2,7 @@ package org.kobe.xbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Spark;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
@@ -31,6 +32,30 @@ public class Main {
         startAddressMonitor(hostname);
     }
 
+    private static void startHttpServer(InetAddress addr, ServiceInfo info) {
+        Spark.port(4567);
+        Spark.get("/serviceInfo", (req, res) -> {
+            res.type("application/json");
+            return "{" +
+                    "\"server\": \"" +
+                    info.getServer() +
+                    "\", " +
+                    "\"address\": \"" +
+                    addr.getHostAddress() +
+                    "\", " +
+                    "\"hostname\": \"" +
+                    info.getPropertyString("hostname") +
+                    "\", " +
+                    "\"username\": \"" +
+                    info.getPropertyString("username") +
+                    "\", " +
+                    "\"password\": \"" +
+                    info.getPropertyString("password") +
+                    "\"" +
+                    "}";
+        });
+    }
+
     private static void setupMDNS(String hostname, String username, String password) {
         try {
             InetAddress addr = Utilities.getLocalInetAddress();
@@ -40,11 +65,12 @@ public class Main {
             props.put("hostname", hostname);
             props.put("username", username);
             props.put("password", password);
-            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, 0,0, props);
+            ServiceInfo serviceInfo = ServiceInfo.create("_xcaster._tcp.local.", "XCASTER - Service Broadcaster", 54321, 0, 0, props);
             jmdns.registerService(serviceInfo);
-
             logger.info("mDNS service registered successfully.");
             logger.info("\nUsername: {}\nPassword: {}", username, password);
+            startHttpServer(addr, serviceInfo);
+            logger.info("HTTP Server started successfully.");
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     logger.info("Shutdown hook running, unregistering services.");
@@ -55,6 +81,8 @@ public class Main {
                     if (timer != null) {
                         timer.cancel();
                     }
+                    logger.info("Stopping HTTP server...");
+                    Spark.awaitStop();
                     logger.info("Resources released successfully.");
                 } catch (Exception e) {
                     logger.error("Failed to release resources.", e);
