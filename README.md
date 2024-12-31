@@ -8,7 +8,7 @@ XCASTER is a tool developed that is designed to broadcast **any** hostname of a 
 
 Download the latest release of XCASTER from the link below:
 
-[Download XCASTER v1.0.0](https://github.com/Kobeeeef/XCASTER/releases/download/v1.0.0/XCASTER.jar)
+[Download XCASTER v2.0.0](https://github.com/Kobeeeef/XCASTER/releases/download/v2.0.0/XCASTER.jar)
 
 ## Usage
 
